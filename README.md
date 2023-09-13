@@ -5,13 +5,13 @@
 #使い方
 
 myproject/Cargo.toml
-```。toml。。。。。
+```toml
 [dependencies]
 dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "master", version = "0.1.0", features = ["dxlib-ffi"], dxlib-ffi = { git = "https://github.com/tanukimaru0090/dxlib-ffi-rs", branch = "master"} }
-```。。。。。。
+```
 
 src / main.rs。
-```。。。。。まぁ。。
+```Rust
 extern crate dxlib_rs;。。
 dxlib_rs :: *;吸います。。
 dxlib_rs :: dx_window :: *;使いやすくなります。。
@@ -24,10 +24,9 @@ fn main(){。。
       }
 }
 }
-```。。。。。。
-上記 ⁇ 作成、閉会後の ⁇ 子も今の。。
-
-最後に、「貨物製造-放出」は、実行 ⁇ と同 ⁇ 「DxLib_x64.dll」は、これと実行の追跡と今の ⁇ です。。
+```
+上記はWindowを表示するだけです。
+最後に、 「DxLib_x64.dll」を実行時のディレクトリに置くことで実行できるはずです。
 DxLib_x64.dllはDXライブラリの公式サイトのC#版DXライブラリをダウンロードすることで使うことができます。
 
 
