@@ -12,14 +12,15 @@ dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "maste
 
 src / main.rs。
 ```Rust
-extern crate dxlib_rs;。。
-dxlib_rs :: *;吸います。。
-dxlib_rs :: dx_window :: *;使いやすくなります。。
-fn main(){。。
- 安完全で無い{。。
+extern crate dxlib_rs;
+dxlib_rs :: *;
+dxlib_rs :: dx_window :: *;
+fn main(){
+unsafe
+{
  mut ref_window = DxWindow :: new();。 .
- window = ref_window.create_window(DxWindow :: videomode(640,480,32).unwrap()、 "hello world window。。!");。。
- window.is_open(){。。
+ window = ref_window.create_window(DxWindow :: videomode(640,480,32).unwrap()、 "hello world window。。!");
+ window.is_open(){
           
       }
 }
