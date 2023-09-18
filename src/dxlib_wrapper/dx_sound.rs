@@ -1,3 +1,4 @@
+/*
 use crate::dx_common::dxlib::*;
 use crate::dx_resouce::*;
 // DxLibでの音声再生時のプレイタイプ
@@ -75,3 +76,4 @@ impl DxSound {
         self.open_from_file("./touhou01.wav");
     }
 }
+*/
