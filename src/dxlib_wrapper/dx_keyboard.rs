@@ -24,9 +24,15 @@ impl DxKeyBoard {
                 if self.key_buf[i] == 1 {
                     self.key_state[i] += 1;
                     self.press_cnt += 1;
+                    if self.release_cnt > 0 {
+                        self.release_cnt = 0;
+                    }
                 } else {
                     self.key_state[i] = 0;
                     self.release_cnt += 1;
+                    if self.press_cnt > 0 {
+                        self.press_cnt = 0;
+                    }
                 }
             }
         }
