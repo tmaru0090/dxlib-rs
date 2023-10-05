@@ -64,10 +64,10 @@ impl Drop for DxFont {
         let res = self.delete_resouce_data();
         match res {
             Ok(val) => {
-                println!("{:?}", val);
+                println!("Ok({:?})", val);
             }
             Err(val) => {
-                println!("{:?}", val);
+                println!("Err({:?})", val);
             }
         }
     }
