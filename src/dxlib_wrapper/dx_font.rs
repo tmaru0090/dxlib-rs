@@ -44,6 +44,7 @@ impl DxFont {
     pub fn create_font(
         &mut self,
         path: &str,
+        name:&str,
         size: i32,
         thick: i32,
         font_type: i32,
@@ -56,7 +57,7 @@ impl DxFont {
                     return Err(val);
                 }
             }
-            let handle = dx_CreateFontToHandle(path, size, thick, font_type);
+            let handle = dx_CreateFontToHandle(name, size, thick, font_type);
             return Ok(handle);
         }
     }
