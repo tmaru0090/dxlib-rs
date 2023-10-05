@@ -9,7 +9,7 @@ pub struct DxFontData {
     thick: i32,
 }
 impl DxFontData {
-    fn new() -> DxFontData {
+    pub fn new() -> DxFontData {
         return DxFontData {
             font_path: String::new(),
             size: 0,
@@ -22,7 +22,7 @@ pub struct DxFont {
     data: DxFontData,
 }
 impl DxFont {
-    fn new(path: &str) -> DxFont {
+    pub fn new(path: &str) -> DxFont {
         return DxFont {
             data: DxFontData {
                 font_path: path.to_string(),
@@ -31,7 +31,7 @@ impl DxFont {
             },
         };
     }
-    fn add_resouce_data(&mut self) -> Result<String, String> {
+    pub fn add_resouce_data(&mut self) -> Result<String, String> {
         let result = unsafe {
             AddFontResourceExA(
                 self.data.font_path.to_cstring().as_ptr(),
@@ -44,7 +44,7 @@ impl DxFont {
         }
         return Ok("フォントリソースを追加しました".to_string());
     }
-    fn delete_resouce_data(&self) -> Result<String, String> {
+    pub fn delete_resouce_data(&self) -> Result<String, String> {
         // フォントリソースを削除する
         let result = unsafe {
             RemoveFontResourceExA(
