@@ -61,7 +61,7 @@ impl DxFont {
 }
 impl Drop for DxFont {
     fn drop(&mut self) {
-        let res = self.delete_resouce_data();
+       /* let res = self.delete_resouce_data();
         match res {
             Ok(val) => {
                 println!("Ok({:?})", val);
@@ -70,5 +70,6 @@ impl Drop for DxFont {
                 println!("Err({:?})", val);
             }
         }
+        */
     }
 }
