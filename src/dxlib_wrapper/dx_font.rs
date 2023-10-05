@@ -54,6 +54,7 @@ impl DxFont {
             match res {
                 Ok(_) => {}
                 Err(val) => {
+                    println!("Err({:?})",val);
                     return Err(val);
                 }
             }
