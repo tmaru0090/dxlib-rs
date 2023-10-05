@@ -1,7 +1,7 @@
+use crate::dxlib_wrapper::dxlib_ffi::dxlib::ToEncode;
 use std::mem::size_of;
 use std::ops::Drop;
 use winapi::um::wingdi::{AddFontResourceExA, RemoveFontResourceExA, FR_PRIVATE};
-use crate::dxlib_wrapper::dxlib_ffi::dxlib::ToEncode;
 
 pub struct DxFontData {
     font_path: String,
@@ -31,7 +31,7 @@ impl DxFont {
             },
         };
     }
-    pub fn add_resouce_data(&mut self) -> Result<String, String> {
+    pub fn add_resouce_data(&mut self) -> Result<(), String> {
         let result = unsafe {
             AddFontResourceExA(
                 self.data.font_path.to_cstring().as_ptr(),
@@ -42,9 +42,9 @@ impl DxFont {
         if result == 0 {
             return Err("フォントリソースの追加に失敗しました".to_string());
         }
-        return Ok("フォントリソースを追加しました".to_string());
+        return Ok(());
     }
-    pub fn delete_resouce_data(&self) -> Result<String, String> {
+    pub fn delete_resouce_data(&self) -> Result<(), String> {
         // フォントリソースを削除する
         let result = unsafe {
             RemoveFontResourceExA(
@@ -56,16 +56,18 @@ impl DxFont {
         if result == 0 {
             return Err("フォントリソースの削除に失敗しました".to_string());
         }
-        return Ok("フォントリソースを削除しました".to_string());
+        return Ok(());
     }
 }
 impl Drop for DxFont {
     fn drop(&mut self) {
         let res = self.delete_resouce_data();
         match res {
-            Ok(_) => {}
+            Ok(val) => {
+                println!("{:?}", val);
+            }
             Err(val) => {
-                println!("{}", val);
+                println!("{:?}", val);
             }
         }
     }
