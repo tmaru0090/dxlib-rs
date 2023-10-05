@@ -1,6 +1,8 @@
 use std::mem::size_of;
 use std::ops::Drop;
 use winapi::um::wingdi::{AddFontResourceExA, RemoveFontResourceExA, FR_PRIVATE};
+use crate::dxlib_wrapper::dxlib_ffi::dxlib::ToEncode;
+
 pub struct DxFontData {
     font_path: String,
     size: i32,
@@ -32,7 +34,7 @@ impl DxFont {
     fn add_resouce_data(&mut self) -> Result<String, String> {
         let result = unsafe {
             AddFontResourceExA(
-                self.font_path.to_cstring().as_ptr(),
+                self.data.font_path.to_cstring().as_ptr(),
                 FR_PRIVATE,
                 std::ptr::null_mut(),
             )
@@ -46,7 +48,7 @@ impl DxFont {
         // フォントリソースを削除する
         let result = unsafe {
             RemoveFontResourceExA(
-                self.font_path.to_cstring().as_ptr(),
+                self.data.font_path.to_cstring().as_ptr(),
                 FR_PRIVATE,
                 std::ptr::null_mut(),
             )

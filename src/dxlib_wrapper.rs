@@ -8,3 +8,4 @@ pub mod dx_music;
 pub mod dx_resouce;
 pub mod dx_sound;
 pub mod dx_window;
+pub mod dx_font;
