@@ -51,7 +51,7 @@ impl DxFont {
         size: i32,
         thick: i32,
         font_type: i32,
-    ) -> Result<i32, String> {
+    ) -> Result<&DxFont, String> {
         unsafe {
             self.data.font_path = path.to_string();
             let res = self.add_resouce_data(path);
@@ -63,7 +63,7 @@ impl DxFont {
                 }
             }
             self.data.font_handle = dx_CreateFontToHandle(name, size, thick, font_type);
-            return Ok(0);
+            return Ok(self);
         }
     }
     pub fn delete_resouce_data(&self, path: &str) -> Result<(), String> {
