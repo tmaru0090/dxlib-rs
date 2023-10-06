@@ -72,9 +72,9 @@ impl DxWindow {
     pub fn dx_end(&self) -> Result<String, String> {
         unsafe {
             if dx_DxLib_End() == -1 {
-                return Err("02:DxLib_End Error:Please! open Log.txt immediately\n".to_string());
+                return Err("DxLib_End: Error Please! open Log.txt immediately\n".to_string());
             } else {
-                return Ok("02:DxLib_End:Success!\n".to_string());
+                return Ok("DxLib_End: Success!\n".to_string());
             }
         }
     }
@@ -82,9 +82,9 @@ impl DxWindow {
     pub fn dx_init(&self) -> Result<String, String> {
         unsafe {
             if dx_DxLib_Init() == -1 {
-                return Err("01:DxLib_Init Error:Please! open Log.txt immediately\n".to_string());
+                return Err("DxLib_Init: Error Please! open Log.txt immediately\n".to_string());
             } else {
-                return Ok("01:DxLib_Init:Success!\n".to_string());
+                return Ok("DxLib_Init: Success!\n".to_string());
             }
         }
     }
