@@ -6,6 +6,7 @@ use winapi::um::wingdi::{AddFontResourceExA, RemoveFontResourceExA, FR_PRIVATE};
 
 pub struct DxFontData {
     font_path: String,
+    font_handle: i32,
     size: i32,
     thick: i32,
 }
@@ -13,6 +14,7 @@ impl DxFontData {
     pub fn new() -> DxFontData {
         return DxFontData {
             font_path: String::new(),
+            font_handle: 0,
             size: 0,
             thick: 0,
         };
@@ -27,6 +29,7 @@ impl DxFont {
         return DxFont {
             data: DxFontData {
                 font_path: String::new(),
+                font_handle: 0,
                 size: 0,
                 thick: 0,
             },
@@ -44,22 +47,23 @@ impl DxFont {
     pub fn create_font(
         &mut self,
         path: &str,
-        name:&str,
+        name: &str,
         size: i32,
         thick: i32,
         font_type: i32,
     ) -> Result<i32, String> {
         unsafe {
+            self.data.font_path = path.to_string();
             let res = self.add_resouce_data(path);
             match res {
                 Ok(_) => {}
                 Err(val) => {
-                    println!("Err({:?})",val);
+                    println!("Err({:?})", val);
                     return Err(val);
                 }
             }
-            let handle = dx_CreateFontToHandle(name, size, thick, font_type);
-            return Ok(handle);
+            self.data.font_handle = dx_CreateFontToHandle(name, size, thick, font_type);
+            return Ok(0);
         }
     }
     pub fn delete_resouce_data(&self, path: &str) -> Result<(), String> {
@@ -72,18 +76,25 @@ impl DxFont {
         }
         return Ok(());
     }
+    pub fn get_handle(&self)->Result<i32,String>{
+        if self.data.font_handle != -1{
+            return Ok(self.data.font_handle);
+        }else{
+            return Err("ハンドルが無効です".to_string());
+        }
+    }
 }
 impl Drop for DxFont {
     fn drop(&mut self) {
-        /* let res = self.delete_resouce_data();
+        let res = self.delete_resouce_data(&self.data.font_path);
         match res {
             Ok(val) => {
                 println!("Ok({:?})", val);
+                unsafe{dx_DeleteFontToHandle(self.data.font_handle);}
             }
             Err(val) => {
                 println!("Err({:?})", val);
             }
         }
-        */
     }
 }
