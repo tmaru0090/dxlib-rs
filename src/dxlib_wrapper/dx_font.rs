@@ -95,9 +95,9 @@ impl Drop for DxFont {
                 let res = unsafe { dx_DeleteFontToHandle(self.data.font_handle) };
                 println!("Ok({:?})", val);
                 if res != -1 {
-                    println!("DxLib:フォントハンドルは正常に削除されました");
+                    println!("CreateFontToHandle:フォントハンドルは正常に削除されました");
                 }else{
-                    println!("DxLib:フォントハンドルの削除に失敗しました");
+                    println!("CreateFontToHandle:フォントハンドルの削除に失敗しました");
                 }
             }
             Err(val) => {
