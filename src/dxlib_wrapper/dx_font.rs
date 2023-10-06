@@ -54,6 +54,9 @@ impl DxFont {
     ) -> Result<&DxFont, String> {
         unsafe {
             self.data.font_path = path.to_string();
+            self.data.size = size;
+            self.data.thick = thick;
+
             let res = self.add_resouce_data(path);
             match res {
                 Ok(_) => {}
@@ -76,10 +79,10 @@ impl DxFont {
         }
         return Ok(());
     }
-    pub fn get_handle(&self)->Result<i32,String>{
-        if self.data.font_handle != -1{
+    pub fn get_handle(&self) -> Result<i32, String> {
+        if self.data.font_handle != -1 {
             return Ok(self.data.font_handle);
-        }else{
+        } else {
             return Err("ハンドルが無効です".to_string());
         }
     }
@@ -89,8 +92,13 @@ impl Drop for DxFont {
         let res = self.delete_resouce_data(&self.data.font_path);
         match res {
             Ok(val) => {
+                let res = unsafe { dx_DeleteFontToHandle(self.data.font_handle) };
                 println!("Ok({:?})", val);
-                unsafe{dx_DeleteFontToHandle(self.data.font_handle);}
+                if res != -1 {
+                    println!("DxLib:フォントハンドルは正常に削除されました");
+                }else{
+                    println!("DxLib:フォントハンドルの削除に失敗しました");
+                }
             }
             Err(val) => {
                 println!("Err({:?})", val);
