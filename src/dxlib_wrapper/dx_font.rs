@@ -64,6 +64,12 @@ impl HashMgr for DxFont {
     }
     // 指定のキーのハンドルを削除
     fn remove(&mut self, key: Self::Key) -> &DxFont {
+        if self.remove_resouce_data(&self.data.font_path).is_ok(){
+            unsafe{
+                dx_DeleteFontToHandle(*self.data.key_handle.get(&key).unwrap());
+            }
+        }
+
         self.data.key_handle.remove(&key);
         return self;
     }
@@ -122,7 +128,7 @@ impl DxFont {
 
         return Ok(self);
     }
-    pub fn delete_resouce_data(&self, path: &str) -> Result<(), String> {
+    pub fn remove_resouce_data(&self, path: &str) -> Result<(), String> {
         // フォントリソースを削除する
         let result = unsafe {
             RemoveFontResourceExA(path.to_cstring().as_ptr(), FR_PRIVATE, std::ptr::null_mut())
