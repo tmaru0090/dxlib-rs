@@ -90,7 +90,7 @@ impl DxFont {
         return Ok(());
     }
     // 生成したハンドルに別名をつけて、キーとして登録
-    pub fn add(&mut self, key: &str) -> Result<&DxFont, String> {
+    pub fn add(&mut self, key: &str) -> Result<&mut DxFont, String> {
         let handle = self.data.font_handle.get(&self.data.font_path).unwrap();
         self.data.key_handle.insert(key.to_string(),*handle);
         return Ok(self);
@@ -103,7 +103,7 @@ impl DxFont {
         size: i32,
         thick: i32,
         font_type: i32,
-    ) -> Result<&DxFont, String> {
+    ) -> Result<&mut DxFont, String> {
         unsafe {
             self.data.font_path = path.to_string();
             self.data.font_size = size;
@@ -118,7 +118,6 @@ impl DxFont {
             }
             let  handle = dx_CreateFontToHandle(name, size, thick, font_type);
             HashMgr::add(self,path.to_string(),handle);
-
         }
 
         return Ok(self);
@@ -163,3 +162,4 @@ impl Drop for DxFont {
         */
     }
 }
+
