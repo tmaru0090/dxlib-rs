@@ -55,8 +55,7 @@ impl HashMgr for DxFont {
     type GetVal = i32;
     // ハンドルの取得
     fn get(&self, key: Self::Key) -> Option<Self::GetVal> {
-        //let path = self.hash_path.get(key).unwrap();
-        return Some(0);
+        return Some(*self.data.key_handle.get(&key).unwrap());
     }
     // フォントハンドルをパスをキーとして追加
     fn add(&mut self, key: Self::Key, val: Self::Val) -> &DxFont {
