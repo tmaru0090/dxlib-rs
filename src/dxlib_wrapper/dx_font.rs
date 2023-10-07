@@ -64,6 +64,7 @@ impl HashMgr for DxFont {
     }
     // 指定のキーのハンドルを削除
     fn remove(&mut self, key: Self::Key) -> &DxFont {
+        self.data.key_handle.remove(&key);
         return self;
     }
 }
