@@ -9,3 +9,4 @@ pub mod dx_resouce;
 pub mod dx_sound;
 pub mod dx_window;
 pub mod dx_font;
+pub mod dx_image;
