@@ -14,13 +14,21 @@ impl DxImageData {
         };
     }
 }
-struct DxImage{
-}
-impl DxImage{
-    pub fn new()->DxImage{
-        return DxImage{};
+struct DxImage {}
+impl DxImage {
+    pub fn new(image_path: &str) -> DxImage {
+        return DxImage {};
     }
-    pub fn create_image(&mut self)->Result<&mut DxImage,String>{
-        return Ok(self)
+    pub fn create_image(&mut self) -> Result<&mut DxImage, String> {
+        return Ok(self);
+    }
+    pub fn create_divimage(&mut self) -> Result<&mut DxImage, String> {
+        return Ok(self);
+    }
+    pub fn delete_image(&mut self) -> Result<&mut DxImage, String> {
+        return Ok(self);
+    }
+    pub fn delete_divimage(&mut self) -> Result<&mut DxImage, String> {
+        return Ok(self);
     }
 }
