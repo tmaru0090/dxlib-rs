@@ -20,4 +20,7 @@ impl DxImage{
     pub fn new()->DxImage{
         return DxImage{};
     }
+    pub fn create_image(&mut self)->Result<&mut DxImage,String>{
+        return Ok(self);
+    }
 }
