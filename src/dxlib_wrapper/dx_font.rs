@@ -4,6 +4,8 @@ use std::collections::HashMap;
 use std::mem::size_of;
 use std::ops::Drop;
 use winapi::um::wingdi::{AddFontResourceExA, RemoveFontResourceExA, FR_PRIVATE};
+
+/*
 pub trait HashMgr {
     type Key;
     type Val;
@@ -23,10 +25,10 @@ pub trait HandleMgr{
     fn remove(&mut self,key:Self::Key)->Self;
 }
 */
+*/
 
 pub struct DxFontData {
-    font_handle: HashMap<String, i32>,
-    key_handle: HashMap<String, i32>,
+    font_handle: i32,
     font_path: String,
     font_size: i32,
     font_thick: i32,
@@ -36,8 +38,7 @@ pub struct DxFontData {
 impl DxFontData {
     pub fn new() -> DxFontData {
         return DxFontData {
-            font_handle: HashMap::new(),
-            key_handle: HashMap::new(),
+            font_handle: 0,
             font_path: String::new(),
             font_size: 0,
             font_thick: 0,
@@ -45,7 +46,7 @@ impl DxFontData {
         };
     }
 }
-
+/*
 impl HashMgr for DxFont {
     // Path
     type Key = String;
@@ -74,15 +75,23 @@ impl HashMgr for DxFont {
         return self;
     }
 }
+*/
+
 pub struct DxFont {
     data: DxFontData,
 }
 
 impl DxFont {
-    pub fn new() -> DxFont {
+    pub fn new(font_path: &str) -> DxFont {
         return {
             DxFont {
-                data: DxFontData::new(),
+                data: DxFontData {
+                    font_handle: 0,
+                    font_path: String::from(font_path),
+                    font_size: 0,
+                    font_thick: 0,
+                    font_type: 0,
+                },
             }
         };
     }
@@ -95,35 +104,30 @@ impl DxFont {
         }
         return Ok(());
     }
-    // 生成したハンドルに別名をつけて、キーとして登録
-    pub fn add(&mut self, key: &str) -> Result<&mut DxFont, String> {
-        let handle = self.data.font_handle.get(&self.data.font_path).unwrap();
-        self.data.key_handle.insert(key.to_string(),*handle);
-        return Ok(self);
-    }
+
     // 新しくフォントハンドルを作成
     pub fn create_font(
         &mut self,
-        path: &str,
         name: &str,
         size: i32,
         thick: i32,
         font_type: i32,
     ) -> Result<&mut DxFont, String> {
         unsafe {
-            self.data.font_path = path.to_string();
+            let mut path = self.data.font_path.clone();
             self.data.font_size = size;
             self.data.font_thick = thick;
-            let res = self.add_resouce_data(path);
+            let res = self.add_resouce_data(&path);
             match res {
                 Ok(_) => {}
                 Err(val) => {
-                    println!("Err({:?})", val);
                     return Err(val);
                 }
             }
-            let  handle = dx_CreateFontToHandle(name, size, thick, font_type);
-            HashMgr::add(self,path.to_string(),handle);
+            let handle = dx_CreateFontToHandle(name, size, thick, font_type);
+            if handle == -1 {
+                return Err("フォントハンドルの生成に失敗しました".to_string());
+            }
         }
 
         return Ok(self);
@@ -135,6 +139,22 @@ impl DxFont {
         };
         if result == 0 {
             return Err("フォントリソースの削除に失敗しました".to_string());
+        }
+        return Ok(());
+    }
+    pub fn delete_font(&mut self) -> Result<(), String> {
+        let mut path = self.data.font_path.clone();
+        let res = self.remove_resouce_data(&path);
+        match res {
+            Ok(_) => {
+                let res = unsafe { dx_DeleteFontToHandle(self.data.font_handle) };
+                if res == -1 {
+                    return Err("フォントハンドルの削除に失敗しました".to_string());
+                }
+            }
+            Err(val) => {
+                return Err(val);
+            }
         }
         return Ok(());
     }
@@ -150,22 +170,6 @@ impl DxFont {
 }
 impl Drop for DxFont {
     fn drop(&mut self) {
-        /*
-        let res = self.delete_resouce_data(&self.data.font_path);
-        match res {
-            Ok(_) => {
-                let res = unsafe { dx_DeleteFontToHandle(self.data.font_handle) };
-                if res != -1 {
-                    println!("CreateFontToHandle:フォントハンドルは正常に削除されました");
-                }else{
-                    println!("CreateFontToHandle:フォントハンドルの削除に失敗しました");
-                }
-            }
-            Err(val) => {
-                println!("Err({:?})", val);
-            }
-        }
-        */
+        let _ = self.delete_font();
     }
 }
-
