@@ -21,6 +21,6 @@ impl DxImage{
         return DxImage{};
     }
     pub fn create_image(&mut self)->Result<&mut DxImage,String>{
-        return Ok(self);
+        return Ok(self)
     }
 }
