@@ -119,18 +119,23 @@ impl DxFont {
             self.data.font_thick = thick;
             let res = self.add_resouce_data(&path);
             match res {
-                Ok(_) => {}
+                Ok(_) => {
+                    let handle = dx_CreateFontToHandle(name, size, thick, font_type);
+                    self.data.font_handle = handle;
+                    if handle == -1 {
+                        return Err("フォントハンドルの生成に失敗しました".to_string());
+                    }
+                }
                 Err(val) => {
                     return Err(val);
                 }
             }
-            let handle = dx_CreateFontToHandle(name, size, thick, font_type);
-            if handle == -1 {
-                return Err("フォントハンドルの生成に失敗しました".to_string());
-            }
         }
 
         return Ok(self);
+    }
+    pub fn get(&self) -> i32 {
+        return self.data.font_handle;
     }
     pub fn remove_resouce_data(&self, path: &str) -> Result<(), String> {
         // フォントリソースを削除する
