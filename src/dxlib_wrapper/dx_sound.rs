@@ -10,7 +10,7 @@ impl DxSoundData {
     pub fn new(path: &str) -> DxSoundData {
         return DxSoundData {
             sound_path: String::from(path),
-            sound_handle: -1,
+            sound_handle: 0,
         };
     }
     fn new_with_params() {}
@@ -27,26 +27,26 @@ impl DxResouce for DxSound {
         self.data = config.clone();
         let path = self.data.sound_path.clone();
         let handle = unsafe { dx_LoadSoundMem(&path) };
-        if handle != -1{
+        if handle == -1 {
+            return Err("サウンドハンドルの生成に失敗しました".to_string());
+        } else {
             self.data.sound_handle = handle;
             return Ok(self);
-        } else {
-            return Err("サウンドハンドルの生成に失敗しました".to_string());
         }
     }
     fn get(&self) -> Result<Self::GetVal, String> {
-        if self.data.sound_handle != -1 {
-            return Ok(self.data.sound_handle);
-        } else {
+        if self.data.sound_handle == -1 {
             return Err("サウンドハンドルが無効です".to_string());
+        } else {
+            return Ok(self.data.sound_handle);
         }
     }
     fn delete(&mut self) -> Result<&mut Self, String> {
         let res = unsafe { dx_DeleteSoundMem(self.data.sound_handle) };
-        if res != -1 {
-            return Ok(self);
-        } else {
+        if res == -1 {
             return Err("サウンドハンドルの削除に失敗しました".to_string());
+        } else {
+            return Ok(self);
         }
     }
 }
