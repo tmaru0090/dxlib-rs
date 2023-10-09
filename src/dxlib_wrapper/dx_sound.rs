@@ -31,14 +31,14 @@ impl DxResouce for DxSound {
             self.data.sound_handle = handle;
             return Ok(self);
         } else {
-            return Err("".to_string());
+            return Err("サウンドハンドルの生成に失敗しました".to_string());
         }
     }
     fn get(&self) -> Result<Self::GetVal, String> {
         if self.data.sound_handle != -1 {
             return Ok(self.data.sound_handle);
         } else {
-            return Err("".to_string());
+            return Err("サウンドハンドルが無効です".to_string());
         }
     }
     fn delete(&mut self) -> Result<&mut Self, String> {
@@ -46,7 +46,7 @@ impl DxResouce for DxSound {
         if res != -1 {
             return Ok(self);
         } else {
-            return Err("".to_string());
+            return Err("サウンドハンドルの削除に失敗しました".to_string());
         }
     }
 }
