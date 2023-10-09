@@ -7,7 +7,7 @@ impl DxSoundData{
         return DxSoundData{};
     }
 }
-struct DxSound{
+pub struct DxSound{
 }
 
 impl DxResouce for DxSound{

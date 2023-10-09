@@ -14,7 +14,7 @@ impl DxImageData {
         };
     }
 }
-struct DxImage {
+pub struct DxImage {
     data: DxImageData,
 }
 impl DxImage {
