@@ -1,6 +1,6 @@
 use crate::dx_resouce::*;
 
-struct DxSoundData{
+pub struct DxSoundData{
 }
 impl DxSoundData{
     fn new()->DxSoundData{
@@ -9,7 +9,7 @@ impl DxSoundData{
 }
 pub struct DxSound{
 }
-
+/*
 impl DxResouce for DxSound{
     type Config = DxSoundData;
     type GetVal = i32;
@@ -24,6 +24,7 @@ impl DxResouce for DxSound{
     }
 
 }
+*/
 impl DxSound{
     fn new()->DxSound{
         return DxSound{};
