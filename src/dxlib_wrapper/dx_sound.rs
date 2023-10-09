@@ -30,11 +30,9 @@ impl DxResouce for DxSound {
         if handle != -1 {
             self.data.sound_handle = handle;
             return Ok(self);
-        } else if handle == -1 {
+        } else {
             return Err("サウンドハンドルの生成に失敗しました".to_string());
         }
-
-        return Ok(self);
     }
     fn get(&self) -> Result<Self::GetVal, String> {
         if self.data.sound_handle != -1 {
