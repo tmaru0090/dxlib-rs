@@ -29,7 +29,7 @@ impl DxResouce for DxMusic {
         let path = self.data.music_path.clone();
         let handle = unsafe { dx_LoadMusicMem(&path) };
         if handle == -1 {
-            return Err("サウンドハンドルの生成に失敗しました".to_string());
+            return Err("ミュージックハンドルの生成に失敗しました".to_string());
         } else {
             self.data.music_handle = handle;
             return Ok(self);
@@ -37,7 +37,7 @@ impl DxResouce for DxMusic {
     }
     fn get(&self) -> Result<Self::GetVal, String> {
         if self.data.music_handle == -1 {
-            return Err("サウンドハンドルが無効です".to_string());
+            return Err("ミュージックハンドルが無効です".to_string());
         } else {
             return Ok(self.data.music_handle);
         }
@@ -45,7 +45,7 @@ impl DxResouce for DxMusic {
     fn delete(&mut self) -> Result<&mut Self, String> {
         let res = unsafe { dx_DeleteMusicMem(self.data.music_handle) };
         if res == -1 {
-            return Err("サウンドハンドルの削除に失敗しました".to_string());
+            return Err("ミュージックハンドルの削除に失敗しました".to_string());
         } else {
             return Ok(self);
         }
