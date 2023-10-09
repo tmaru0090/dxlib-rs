@@ -10,7 +10,7 @@ impl DxSoundData {
     pub fn new(path: &str) -> DxSoundData {
         return DxSoundData {
             sound_path: String::from(path),
-            sound_handle: 0,
+            sound_handle: -1,
         };
     }
     fn new_with_params() {}
@@ -27,7 +27,7 @@ impl DxResouce for DxSound {
         self.data = config.clone();
         let path = self.data.sound_path.clone();
         let handle = unsafe { dx_LoadSoundMem(&path) };
-        if handle != -1 {
+        if handle != -1{
             self.data.sound_handle = handle;
             return Ok(self);
         } else {
