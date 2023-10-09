@@ -27,7 +27,7 @@ impl DxResouce for DxSound {
         self.data = config.clone();
         let path = self.data.sound_path.clone();
         let handle = unsafe { dx_LoadSoundMem(&path) };
-        if handle != -1 {
+        if handle != -1 || handle != 0 {
             self.data.sound_handle = handle;
             return Ok(self);
         } else {
