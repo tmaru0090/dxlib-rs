@@ -5,14 +5,12 @@ use crate::dx_resouce::*;
 pub struct DxSoundData {
     sound_path: String,
     sound_handle: i32,
-    sound_play_type: i32,
 }
 impl DxSoundData {
     fn new(path: &str) -> DxSoundData {
         return DxSoundData {
             sound_path: String::from(path),
             sound_handle: 0,
-            sound_play_type: 0,
         };
     }
     fn new_with_params() {}
@@ -59,7 +57,6 @@ impl DxSound {
             data: DxSoundData {
                 sound_handle: 0,
                 sound_path: String::new(),
-                sound_play_type: 0,
             },
         };
     }
