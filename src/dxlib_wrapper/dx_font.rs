@@ -205,9 +205,9 @@ impl DxFont {
 
         return Ok(self);
     }
-    pub fn get(&self) -> i32 {
-        return self.data.font_handle;
-    }
+  /*  pub fn get(&self) -> i32 {*/
+        /*return self.data.font_handle;*/
+    /*}*/
     pub fn remove_resouce_data(&self, path: &str) -> Result<(), String> {
         // フォントリソースを削除する
         let result = unsafe {
