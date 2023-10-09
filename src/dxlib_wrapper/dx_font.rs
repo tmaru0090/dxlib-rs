@@ -47,6 +47,22 @@ impl DxFontData {
             font_type: 0,
         };
     }
+    pub fn new_with_params(
+        font_path: &str,
+        font_name: &str,
+        font_size: i32,
+        font_thick: i32,
+        font_type: i32,
+    ) -> DxFontData {
+        return DxFontData {
+                font_path: String::from(font_path),
+                font_name: String::from(font_name),
+                font_size: font_size,
+                font_thick: font_thick,
+                font_type: font_type,
+                font_handle: 0,
+        };
+    }
 }
 impl DxResouce for DxFont {
     type Config = DxFontData;
@@ -100,7 +116,7 @@ impl DxResouce for DxFont {
         return Ok(self);
     }
 }
-
+fn d() {}
 /*
 impl HashMgr for DxFont {
     // Path
@@ -150,18 +166,6 @@ impl DxFont {
                 },
             }
         };
-    }
-     pub fn new_with_params(font_name:&str,font_path:&str,font_size:i32,font_thick:i32,font_type:i32)->DxFont{
-        return DxFont{
-            data:DxFontData{
-                font_name:String::from(font_name),
-                font_path:String::from(font_path),
-                font_size:font_size,
-                font_thick:font_thick,
-                font_type:font_type,
-                font_handle:0,
-            }
-        }
     }
     pub fn add_resouce_data(&mut self, path: &str) -> Result<(), String> {
         let result = unsafe {
