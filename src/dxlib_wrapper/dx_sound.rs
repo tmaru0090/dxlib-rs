@@ -7,7 +7,7 @@ pub struct DxSoundData {
     sound_handle: i32,
 }
 impl DxSoundData {
-    fn new(path: &str) -> DxSoundData {
+    pub fn new(path: &str) -> DxSoundData {
         return DxSoundData {
             sound_path: String::from(path),
             sound_handle: 0,
