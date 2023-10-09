@@ -1,33 +1,67 @@
+use crate::dx_common::dxlib::*;
 use crate::dx_resouce::*;
 
-pub struct DxSoundData{
+#[derive(Debug, Clone)]
+pub struct DxSoundData {
+    sound_path: String,
+    sound_handle: i32,
+    sound_play_type: i32,
 }
-impl DxSoundData{
-    fn new()->DxSoundData{
-        return DxSoundData{};
+impl DxSoundData {
+    fn new(path: &str) -> DxSoundData {
+        return DxSoundData {
+            sound_path: String::from(path),
+            sound_handle: 0,
+            sound_play_type: 0,
+        };
     }
+    fn new_with_params() {}
 }
-pub struct DxSound{
+#[derive(Debug, Clone)]
+pub struct DxSound {
+    data: DxSoundData,
 }
 
-impl DxResouce for DxSound{
+impl DxResouce for DxSound {
     type Config = DxSoundData;
     type GetVal = i32;
-    fn create(&mut self,config:&Self::Config)->Result<&mut Self,String>{
-        return Ok(self);
+    fn create(&mut self, config: &Self::Config) -> Result<&mut Self, String> {
+        self.data = config.clone();
+        let path = self.data.sound_path.clone();
+        let handle = unsafe { dx_LoadSoundMem(&path) };
+        if handle != -1 {
+            self.data.sound_handle = handle;
+            return Ok(self);
+        } else {
+            return Err("".to_string());
+        }
     }
-    fn get(&self)->Result<Self::GetVal,String>{
-        return Ok(0);
+    fn get(&self) -> Result<Self::GetVal, String> {
+        if self.data.sound_handle != -1 {
+            return Ok(self.data.sound_handle);
+        } else {
+            return Err("".to_string());
+        }
     }
-    fn delete(&mut self)->Result<&mut Self,String>{
-        return Ok(self);
+    fn delete(&mut self) -> Result<&mut Self, String> {
+        let res = unsafe { dx_DeleteSoundMem(self.data.sound_handle) };
+        if res != -1 {
+            return Ok(self);
+        } else {
+            return Err("".to_string());
+        }
     }
-
 }
 
-impl DxSound{
-    fn new()->DxSound{
-        return DxSound{};
+impl DxSound {
+    fn new() -> DxSound {
+        return DxSound {
+            data: DxSoundData {
+                sound_handle: 0,
+                sound_path: String::new(),
+                sound_play_type: 0,
+            },
+        };
     }
 }
 
