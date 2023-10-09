@@ -246,6 +246,6 @@ impl DxFont {
 }
 impl Drop for DxFont {
     fn drop(&mut self) {
-        let _ = self.delete_font();
+        //let _ = self.delete_font();
     }
 }

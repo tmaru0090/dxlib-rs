@@ -15,4 +15,5 @@ pub mod dx_font_mgr;
 pub mod dx_music_mgr; 
 pub mod dx_image_mgr; 
 pub mod dx_sound_mgr;
-
+pub mod dx_error;
+pub mod dx_log;
