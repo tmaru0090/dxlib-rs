@@ -1,3 +1,35 @@
+use crate::dx_resouce::*;
+
+struct DxSoundData{
+}
+impl DxSoundData{
+    fn new()->DxSoundData{
+        return DxSoundData{};
+    }
+}
+struct DxSound{
+}
+
+impl DxResouce for DxSound{
+    type Config = DxSoundData;
+    type GetVal = i32;
+    fn create(&mut self,config:&Self::Config)->Result<&mut Self,String>{
+        return Ok(self);
+    }
+    fn get(&self)->Result<Self::GetVal,String>{
+        return Ok(0);
+    }
+    fn delete(&mut self)->Result<&mut Self,String>{
+        return Ok(self);
+    }
+
+}
+impl DxSound{
+    fn new()->DxSound{
+        return DxSound{};
+    }
+}
+
 /*
 use crate::dx_common::dxlib::*;
 use crate::dx_resouce::*;

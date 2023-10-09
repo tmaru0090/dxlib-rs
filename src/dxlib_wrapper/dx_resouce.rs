@@ -1,10 +1,12 @@
-// リソースファイルデータ
-#[derive(Debug, Clone)]
-pub struct DxResouceData {
-    pub path: String,
-    pub data: i32,
-    pub data_handle: Vec<i32>,
+// リソース関係
+pub trait DxResouce {
+    type Config; // 設定
+    type GetVal; // ゲッターでの戻り値の型
+    fn create(&mut self, config: &Self::Config) -> Result<&mut Self, String>;
+    fn get(&self) -> Result<Self::GetVal,String>;
+    fn delete(&mut self) -> Result<&mut Self, String>;
 }
-pub trait DxResouce: Sized {
-    fn open_from_file(&mut self, path: &str) -> Result<Self, u32>;
+// リソースの管理
+pub trait DxResouceMgr<T:DxResouce>  {
+    type MgrObj; // 管理対象のオブジェクト
 }
