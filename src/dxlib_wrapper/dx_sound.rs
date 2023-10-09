@@ -27,7 +27,7 @@ impl DxResouce for DxSound {
         self.data = config.clone();
         let path = self.data.sound_path.clone();
         let handle = unsafe { dx_LoadSoundMem(&path) };
-        if handle != -1 || handle != 0 {
+        if handle != -1{
             self.data.sound_handle = handle;
             return Ok(self);
         } else {
@@ -35,7 +35,7 @@ impl DxResouce for DxSound {
         }
     }
     fn get(&self) -> Result<Self::GetVal, String> {
-        if self.data.sound_handle != -1 || self.data.sound_handle != 0 {
+        if self.data.sound_handle != -1{
             return Ok(self.data.sound_handle);
         } else {
             return Err("サウンドハンドルが無効です".to_string());
