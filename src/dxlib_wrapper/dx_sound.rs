@@ -52,7 +52,7 @@ impl DxResouce for DxSound {
 }
 
 impl DxSound {
-    fn new() -> DxSound {
+    pub fn new() -> DxSound {
         return DxSound {
             data: DxSoundData {
                 sound_handle: 0,
