@@ -37,17 +37,7 @@ pub struct DxFontData {
 }
 
 impl DxFontData {
-    pub fn new() -> DxFontData {
-        return DxFontData {
-            font_name: String::new(),
-            font_handle: 0,
-            font_path: String::new(),
-            font_size: 0,
-            font_thick: 0,
-            font_type: 0,
-        };
-    }
-    pub fn new_with_params(
+       pub fn new(
         font_path: &str,
         font_name: &str,
         font_size: i32,

@@ -67,6 +67,6 @@ impl MyFile {
             lines.push(line?);
         }
 
-        Ok(lines)
+        return Ok(lines);
     }
 }
