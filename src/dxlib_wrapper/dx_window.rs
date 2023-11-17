@@ -1,7 +1,7 @@
 extern crate alloc;
+use crate::dx_common::dxlib::*;
 use crate::my_file::MyFile;
 use alloc::rc::Rc;
-use crate::dx_common::dxlib::*;
 //ビデオモード時のデータ
 pub struct DxVideModeData {
     width: i32,    //クライアントサイズのwidth
@@ -131,12 +131,10 @@ impl Drop for DxWindow {
             match dxend {
                 // 失敗したときの処理
                 Ok(val) => {
-                    MyFile::new("./game.GAME_LOG")
-                        .file_write_append(val);
+                    MyFile::new("./game.GAME_LOG").file_write_append(val);
                 }
                 Err(err) => {
-                    MyFile::new("./game.GAME_LOG")
-                        .file_write_append(err);
+                    MyFile::new("./game.GAME_LOG").file_write_append(err);
                 }
             }
         }

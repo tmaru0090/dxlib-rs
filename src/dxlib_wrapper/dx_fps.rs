@@ -1,6 +1,6 @@
 extern crate alloc;
-use alloc::vec::Vec;
 use crate::dx_common::dxlib::*;
+use alloc::vec::Vec;
 use std::thread::sleep;
 use std::time::Duration;
 

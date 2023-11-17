@@ -1,4 +1,3 @@
-
 use crate::dx_common::dxlib::*;
 use core::ffi::CStr;
 pub struct DxInputProperty {}
@@ -15,7 +14,7 @@ pub struct DxInputData {
 #[derive(Clone)]
 pub struct DxInput {
     input_data: DxInputData,
-} 
+}
 impl Default for DxInputStyle {
     fn default() -> DxInputStyle {
         return DxInputStyle::Brink;

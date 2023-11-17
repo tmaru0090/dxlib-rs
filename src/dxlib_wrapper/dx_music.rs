@@ -1,4 +1,3 @@
-
 use crate::dx_common::dxlib::*;
 use crate::dx_resouce::*;
 
@@ -62,4 +61,3 @@ impl DxMusic {
         };
     }
 }
-

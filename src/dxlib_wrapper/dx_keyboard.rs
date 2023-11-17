@@ -21,7 +21,6 @@ impl DxKeyBoard {
             dx_GetHitKeyStateAll(self.key_buf.as_mut_ptr());
             // キーの状態を更新
             for i in 0..256 {
-                //self.key_state[i] += 1;
                 if self.key_buf[i] != 0 {
                     self.press_cnt[i] += 1;
                     if self.release_cnt[i] > 0 {
@@ -30,7 +29,9 @@ impl DxKeyBoard {
                 } else {
                     self.release_cnt[i] += 1;
                     if self.press_cnt[i] > 0 {
-                        self.press_cnt[i] = 0;
+                        self.press_cnt[i] -= 1;
+                    } else if self.release_cnt[i] < 0 {
+                        self.release_cnt[i] = 0;
                     }
                 }
             }
