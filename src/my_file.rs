@@ -29,7 +29,7 @@ impl MyFile {
         let mut file = File::create(&self.file_data.path).unwrap();
         file.write_all(&buf.as_bytes()).unwrap();
         file.flush();
-        return true;
+        true
     }
     pub fn file_write_append(&mut self, buf: String) -> bool {
         let mut file = OpenOptions::new()
@@ -37,11 +37,11 @@ impl MyFile {
             .open(&self.file_data.path)
             .unwrap();
         file.write_all(&buf.as_bytes());
-        return true;
+        true
     }
     pub fn create_files(&mut self) -> &MyFile {
         let mut file = File::create(&self.file_data.path);
-        return self;
+        self
     }
     pub fn file_read_gets(&self, target_line: usize, buf: &mut String) -> io::Result<()> {
         let mut file = File::open(&self.file_data.path)?;
@@ -55,7 +55,7 @@ impl MyFile {
             }
         }
 
-        return Ok(());
+        Ok(())
     }
     pub fn file_read_all_in_vec(&self) -> io::Result<Vec<String>> {
         let file = File::open(&self.file_data.path)?;
@@ -67,6 +67,6 @@ impl MyFile {
             lines.push(line?);
         }
 
-        return Ok(lines);
+        Ok(lines)
     }
 }
