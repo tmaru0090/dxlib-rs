@@ -96,13 +96,13 @@ impl DxWindow {
     pub fn is_open(&mut self) -> bool {
         unsafe {
             if dx_ProcessMessage() == 0 {
-                return true
+                return true;
             }
-            return false
+            return false;
         }
     }
-    pub fn videomode(width: i32, height: i32, color_bit: i32) ->DxVideoModeData {
-        DxVideoModeData{
+    pub fn videomode(width: i32, height: i32, color_bit: i32) -> DxVideoModeData {
+        DxVideoModeData {
             width: width,
             height: height,
             colorbit: color_bit,

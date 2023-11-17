@@ -17,7 +17,7 @@ pub struct DxInput {
 }
 impl Default for DxInputStyle {
     fn default() -> DxInputStyle {
-        return DxInputStyle::Brink;
+        DxInputStyle::Brink
     }
 }
 impl DxInput {
@@ -30,23 +30,13 @@ impl DxInput {
             };
         }
 
-        return Box::new(DxInput {
+        Box::new(DxInput {
             input_data: DxInputData {
                 input_buf: [0; 200],
                 input_str: String::new(),
             },
-        });
-    } /*
-      pub fn set_property(&mut self, cursor_brink_flag: DxInputStyle) -> DxInput {
-          unsafe {
-              let result = match cursor_brink_flag {
-                  DxInputStyle::Brink => dx_SetKeyInputCursorBrinkFlag(TRUE),
-                  DxInputStyle::NoBrink => dx_SetKeyInputCursorBrinkFlag(FALSE),
-                  _ => -1,
-              };
-          }
-      }
-       */
+        })
+    }
     pub fn wait_input_key(&mut self, x: i32, y: i32, cancel_flag: i32) {
         unsafe {
             dx_KeyInputSingleCharString(
@@ -74,6 +64,6 @@ impl DxInput {
         }
     }
     pub fn get_input_str(&self) -> String {
-        return self.input_data.input_str.clone();
+        self.input_data.input_str.clone()
     }
 }
