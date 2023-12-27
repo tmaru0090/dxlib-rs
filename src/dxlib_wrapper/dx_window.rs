@@ -31,9 +31,9 @@ impl DxWindow {
     pub fn finalize(&self) {
         unsafe {}
     }
-    //新しくウィンドウ情報を空で初期化し、スマートポインタ返す
-    pub fn new() -> Box<DxWindow> {
-        Box::new(DxWindow {
+    //新しくウィンドウ情報を空で初期化
+    pub fn new() -> DxWindow {
+        DxWindow {
             videomode_data: DxVideoModeData {
                 width: 0,
                 height: 0,
@@ -41,7 +41,7 @@ impl DxWindow {
             },
             title: String::new(),
             window_dest_flag: false,
-        })
+        }
     }
 
     //新しくウィンドウを作成
