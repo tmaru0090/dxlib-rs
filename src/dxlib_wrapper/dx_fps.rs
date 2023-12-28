@@ -3,7 +3,7 @@ use crate::dx_common::dxlib::*;
 use alloc::vec::Vec;
 use std::thread::sleep;
 use std::time::Duration;
-
+use crate::dx_error::*;
 const LIST_LEN_MAX: usize = 120; // Maximum number of frames to track
 const FPS: i32 = 60; // Target FPS
 const UPINTVL: i32 = 60; // Update interval
@@ -23,31 +23,32 @@ impl DxFps {
         }
     }
 
-    pub fn wait(&mut self) {
+    pub fn wait(&mut self)->Result<(),DxErrorType> {
         self.counter += 1;
-        let wait_time = self.get_wait_time();
+        let wait_time = self.get_wait_time()?;
         sleep(Duration::from_millis(wait_time as u64));
         self.regist();
         if self.counter == UPINTVL {
             self.update_average();
             self.counter = 0;
         }
+        Ok(())
     }
 
-    pub fn get_wait_time(&self) -> i32 {
+    pub fn get_wait_time(&self) -> Result<i32,DxErrorType> {
         unsafe {
             let len = self.list.len();
             if len == 0 {
-                return 0;
+                return Ok(0);
             }
             let should_took_time = (1000.0 / FPS as f32) as i32 * (len as i32 + 1);
 
             let actually_took_time = dx_GetNowCount() - self.list[0] as i32;
             let wait_time = should_took_time - actually_took_time as i32;
             if wait_time > 0 {
-                wait_time as i32
+                Ok(wait_time as i32)
             } else {
-                0
+                Ok(0)
             }
         }
     }
