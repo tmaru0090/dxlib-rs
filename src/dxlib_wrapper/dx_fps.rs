@@ -69,13 +69,13 @@ impl DxFps {
         self.fps = fps.round();
     }
 
-    pub fn draw(&self) {
+    pub fn draw(&self,color:Color) {
         unsafe {
             dx_DrawString(
                 0,
                 0,
                 &format!("{}{}{}", "@fps[", self.fps, "]"),
-                dx_GetColor(255, 255, 255),
+                color,
             );
         }
     }

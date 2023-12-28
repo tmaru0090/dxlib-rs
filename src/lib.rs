@@ -38,7 +38,7 @@ mod tests {
                     ),
                     color,
                 );
-                fps.draw();
+                fps.draw(dx_GetColor(255,0,255));
                 fps.wait()?;
                 dx_ScreenFlip();
             }
