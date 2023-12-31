@@ -2,6 +2,7 @@ use crate::dx_common::dxlib::*;
 use crate::dx_error::*;
 use crate::dx_resouce::*;
 use std::slice;
+
 #[derive(Debug, Clone)]
 pub struct DxImageData {
     image_path: String,
@@ -14,7 +15,6 @@ impl DxImageData {
             image_handle: 0,
         };
     }
-    fn new_with_params() {}
 }
 #[derive(Debug, Clone)]
 pub struct DxImage {
