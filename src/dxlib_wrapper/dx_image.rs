@@ -1,7 +1,7 @@
 use crate::dx_common::dxlib::*;
 use crate::dx_error::*;
 use crate::dx_resouce::*;
-
+use std::slice;
 #[derive(Debug, Clone)]
 pub struct DxImageData {
     image_path: String,
@@ -49,15 +49,16 @@ impl DxResouce for DxImage {
         }
     }
     fn delete(&mut self) -> Result<&mut Self, DxErrorType> {
-        let res = unsafe { dx_DeleteGraph(self.data.image_handle) };
-        if res == -1 {
-            return Err(DxErrorType::ResouceE(DxResouceError::new(
-                "画像ハンドルの削除に失敗しました",
-                res,
-            )));
-        } else {
-            return Ok(self);
+        if self.data.image_handle != -1 {
+            let res = unsafe { dx_DeleteGraph(self.data.image_handle) };
+            if res == -1 {
+                return Err(DxErrorType::ResouceE(DxResouceError::new(
+                    "画像ハンドルの削除に失敗しました",
+                    res,
+                )));
+            }
         }
+        return Ok(self);
     }
 }
 impl DxImage {
@@ -116,7 +117,7 @@ impl DxResouce for DxDivImage {
     fn create(&mut self, config: &Self::Config) -> Result<&mut Self, DxErrorType> {
         self.data = config.clone();
         let path = self.data.image_path.clone();
-        let handle = unsafe {
+        let res = unsafe {
             dx_LoadDivGraph(
                 &path,
                 self.data.image_allnum,
@@ -127,36 +128,34 @@ impl DxResouce for DxDivImage {
                 self.data.image_handlebuf,
             )
         };
-        if handle == -1 {
-            return Err(DxErrorType::ResouceE(DxResouceError::new(
-                "画像ハンドルの生成に失敗しました",
-                handle,
-            )));
-        } else {
-            self.data.image_handle = handle;
-            return Ok(self);
-        }
-    }
-    fn get(&self) -> Result<Self::GetVal, DxErrorType> {
-        if self.data.image_handle == -1 {
-            return Err(DxErrorType::ResouceE(DxResouceError::new(
-                "画像ハンドルが無効です",
-                self.data.image_handle,
-            )));
-        } else {
-            return Ok(self.data.image_handle);
-        }
-    }
-    fn delete(&mut self) -> Result<&mut Self, DxErrorType> {
-        let res = unsafe { dx_DeleteGraph(self.data.image_handle) };
         if res == -1 {
             return Err(DxErrorType::ResouceE(DxResouceError::new(
-                "画像ハンドルの削除に失敗しました",
+                "画像ハンドルの生成に失敗しました",
                 res,
             )));
         } else {
             return Ok(self);
         }
+    }
+    fn get(&self) -> Result<Self::GetVal, DxErrorType> {
+        return Ok(self.data.image_handle);
+    }
+    fn delete(&mut self) -> Result<&mut Self, DxErrorType> {
+        let data_slice = unsafe {
+            slice::from_raw_parts_mut(self.data.image_handlebuf, self.data.image_allnum as usize)
+        };
+        for &mut handle in data_slice {
+            if handle != -1 {
+                let res = unsafe { dx_DeleteGraph(handle) };
+                if res == -1 {
+                    return Err(DxErrorType::ResouceE(DxResouceError::new(
+                        "画像ハンドルが無効です",
+                        handle,
+                    )));
+                }
+            }
+        }
+        Ok(self)
     }
 }
 impl DxDivImage {
