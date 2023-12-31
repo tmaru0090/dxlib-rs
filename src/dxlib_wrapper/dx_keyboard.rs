@@ -16,12 +16,15 @@ impl DxKeyBoard {
             release_cnt: [0; 256],
         };
     }
-    pub fn update(&mut self)->Result<(),DxErrorType>{
+    pub fn update(&mut self) -> Result<(), DxErrorType> {
         unsafe {
             // キーの状態を取得
             let res = dx_GetHitKeyStateAll(self.key_buf.as_mut_ptr());
-            if res == -1{
-                return Err(DxErrorType::DxLibE(DxError::new("関数 GetHitKeyStateAllでエラーが発生しました",res)))
+            if res == -1 {
+                return Err(DxErrorType::DxLibE(DxError::new(
+                    "関数 GetHitKeyStateAllでエラーが発生しました",
+                    res,
+                )));
             }
             // キーの状態を更新
             for i in 0..256 {

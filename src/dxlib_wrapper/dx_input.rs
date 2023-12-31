@@ -21,7 +21,7 @@ impl Default for DxInputStyle {
     }
 }
 impl DxInput {
-    pub fn new(style: DxInputStyle) -> Box<DxInput> {
+    pub fn new(style: DxInputStyle) -> DxInput {
         unsafe {
             let result = match style {
                 DxInputStyle::Brink => dx_SetKeyInputCursorBrinkFlag(TRUE),
@@ -30,12 +30,12 @@ impl DxInput {
             };
         }
 
-        Box::new(DxInput {
+        DxInput {
             input_data: DxInputData {
                 input_buf: [0; 200],
                 input_str: String::new(),
             },
-        })
+        }
     }
     pub fn wait_input_key(&mut self, x: i32, y: i32, cancel_flag: i32) {
         unsafe {
@@ -63,7 +63,11 @@ impl DxInput {
             self.input_data.input_str = buf.to_str().unwrap().to_string();
         }
     }
-    pub fn get_input_str(&self) -> String {
-        self.input_data.input_str.clone()
+    pub fn get_input_str(&self) -> Option<String> {
+        if self.input_data.input_str.clone().is_empty() {
+            None
+        } else {
+            Some(self.input_data.input_str.clone())
+        }
     }
 }

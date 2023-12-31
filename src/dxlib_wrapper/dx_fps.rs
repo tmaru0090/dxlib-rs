@@ -1,9 +1,9 @@
 extern crate alloc;
 use crate::dx_common::dxlib::*;
+use crate::dx_error::*;
 use alloc::vec::Vec;
 use std::thread::sleep;
 use std::time::Duration;
-use crate::dx_error::*;
 const LIST_LEN_MAX: usize = 120; // Maximum number of frames to track
 const FPS: i32 = 60; // Target FPS
 const UPINTVL: i32 = 60; // Update interval
@@ -23,7 +23,7 @@ impl DxFps {
         }
     }
 
-    pub fn wait(&mut self)->Result<(),DxErrorType> {
+    pub fn wait(&mut self) -> Result<(), DxErrorType> {
         self.counter += 1;
         let wait_time = self.get_wait_time()?;
         sleep(Duration::from_millis(wait_time as u64));
@@ -35,7 +35,7 @@ impl DxFps {
         Ok(())
     }
 
-    pub fn get_wait_time(&self) -> Result<i32,DxErrorType> {
+    pub fn get_wait_time(&self) -> Result<i32, DxErrorType> {
         unsafe {
             let len = self.list.len();
             if len == 0 {
@@ -69,14 +69,9 @@ impl DxFps {
         self.fps = fps.round();
     }
 
-    pub fn draw(&self,color:Color) {
+    pub fn draw(&self, color: Color) {
         unsafe {
-            dx_DrawString(
-                0,
-                0,
-                &format!("{}{}{}", "@fps[", self.fps, "]"),
-                color,
-            );
+            dx_DrawString(0, 0, &format!("{}{}{}", "@fps[", self.fps, "]"), color);
         }
     }
 
