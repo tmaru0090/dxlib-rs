@@ -53,7 +53,7 @@ impl KeyBoard {
         while self.get_press_cnt(key_code) < 1 {
             // ウェイトを入れて、無駄な処理負荷を軽減します
             //thread::sleep(Duration::from_millis(10));
-            unsafe{WaitTimer(1000);}
+            unsafe{dx_WaitTimer(1000);}
         }
     }
     pub fn is_available_code(&self, key_code: i32) -> bool {
