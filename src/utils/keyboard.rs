@@ -50,10 +50,10 @@ impl KeyBoard {
 
    pub fn wait_until_key_pressed(&self, key_code: i32) {
         // 指定されたキーコードが1以上になるまで待機します
-        while !(self.get_press_cnt(key_code) > 0) {
+        while !(self.get_press_cnt(key_code) > 1) {
             // ウェイトを入れて、無駄な処理負荷を軽減します
             //thread::sleep(Duration::from_millis(10));
-            unsafe{dx_WaitTimer(1000);}
+            unsafe{dx_WaitTimer(100);}
         }
     }
     pub fn is_available_code(&self, key_code: i32) -> bool {
