@@ -4,6 +4,7 @@ use crate::ffi::dxlib::*;
 use anyhow::anyhow;
 use anyhow::Result as Res;
 
+/// ウィンドウサイズを変更する
 pub fn set_window_size(width: i32, height: i32) -> Res<i32> {
     let res = unsafe { dx_SetWindowSize(width, height) };
     if res == -1 {
@@ -12,6 +13,7 @@ pub fn set_window_size(width: i32, height: i32) -> Res<i32> {
         return Ok(res);
     }
 }
+/// ウィンドウのアクティブ状態を変更する
 pub fn set_always_run_flag(flag: i32) -> Res<i32> {
     let res = unsafe { dx_SetAlwaysRunFlag(flag) };
     if res == -1 {
@@ -58,7 +60,7 @@ pub fn set_draw_screen(draw_screen: i32) -> Res<i32> {
 pub fn dxlib_init() -> Res<i32> {
     let res = unsafe { dx_DxLib_Init() };
     if res == -1 {
-        return Err(anyhow!(DxError::new("DxLib_Init() Erorr", res)));
+        return Err(anyhow!(DxError::new("DxLibの初期化に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -66,7 +68,7 @@ pub fn dxlib_init() -> Res<i32> {
 pub fn dxlib_end() -> Res<i32> {
     let res = unsafe { dx_DxLib_End() };
     if res == -1 {
-        return Err(anyhow!(DxError::new("DxLib_End() Error", res)));
+        return Err(anyhow!(DxError::new("DxLibの終了に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -74,7 +76,7 @@ pub fn dxlib_end() -> Res<i32> {
 pub fn process_message() -> Res<i32> {
     let res = unsafe { dx_ProcessMessage() };
     if res == -1 {
-        return Err(anyhow!(DxError::new("ProcessMessage() Error", res)));
+        return Err(anyhow!(DxError::new("エラーが発生したか、ウィンドウが閉じられました。", res)));
     } else {
         return Ok(res);
     }
@@ -82,7 +84,7 @@ pub fn process_message() -> Res<i32> {
 pub fn draw_string(x: i32, y: i32, string: &str, color: u32) -> Res<i32> {
     let res = unsafe { dx_DrawString(x, y, string, color) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("文字列の描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -96,7 +98,7 @@ pub fn get_color(red: i32, green: i32, blue: i32) -> Option<u32> {
 pub fn change_window_mode(flag: i32) -> Res<i32> {
     let res = unsafe { dx_ChangeWindowMode(flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("ウィンドウモードの変更に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -104,27 +106,33 @@ pub fn change_window_mode(flag: i32) -> Res<i32> {
 pub fn set_use_charcode_format(char_code_format: i32) -> Res<i32> {
     let res = unsafe { dx_SetUseCharCodeFormat(char_code_format) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("文字コードの変更に失敗しました。", res)));
     } else {
         return Ok(res);
     }
 }
+// グラフィックデータ制御関数
+
+/// 画像ファイルのメモリへの読み込み、及び動画ファイルのロード
 pub fn load_graph(file_name: &str) -> Res<i32> {
     let res = unsafe { dx_LoadGraph(file_name) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("画像の読み込みに失敗しました。", res)));
     } else {
         return Ok(res);
     }
 }
+/// メモリに読み込んだグラフィックの描画
 pub fn draw_graph(x: i32, y: i32, gr_handle: i32, trans_flag: i32) -> Res<i32> {
     let res = unsafe { dx_DrawGraph(x, y, gr_handle, trans_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("ロード済みの画像の描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
 }
+
+/// メモリに読み込んだグラフィックの拡大縮小描画
 pub fn draw_extend_graph(
     x1: i32,
     y1: i32,
@@ -135,17 +143,131 @@ pub fn draw_extend_graph(
 ) -> Res<i32> {
     let res = unsafe { dx_DrawExtendGraph(x1, y1, x2, y2, gr_handle, trans_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("画像の描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
 }
 
+
+/// メモリに読み込んだグラフィックの回転描画
+pub fn draw_rota_graph(
+    x:i32,
+    y:i32,
+    ext_rate:f64,
+    angle:f64,
+    gr_handle:i32,
+    trans_flag:i32,
+    turn_flag:i32,
+) -> Res<i32> {
+    let res = unsafe { dx_DrawRotaGraph(x, y, ext_rate, angle, gr_handle, trans_flag,turn_flag) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("画像の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+
+
+/*
+pub fn draw_turn_graph(x:i32,y:i32,gr_handle:i32,trans_flag:i32)->Res<i32>{
+    let res = unsafe { dx_DrawTurnGraph(x, y, gr_handle, trans_flag) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("ロード済みの画像の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+*/
+
+pub fn get_graph_size(gr_handle:i32,size_xbuf:&mut i32,size_ybuf:&mut i32)->Res<i32>{
+    let res = unsafe { dx_GetGraphSize(gr_handle,size_xbuf,size_ybuf) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("ロード済みの画像のサイズの取得に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+
+}
+
+
+
+// 図形描画関数
+
+/// 線を描画
+pub fn draw_line(x1: i32, y1: i32, x2: i32, y2: i32, color: Color) -> Res<i32> {
+    let res = unsafe { dx_DrawLine(x1, y1, x2, y2, color) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("線の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+/// 線を描画(アンチエイリアス効果付き)
+pub fn draw_line_aa(x1: f32, y1: f32, x2: f32, y2: f32, color: Color) -> Res<i32> {
+    let res = unsafe { dx_DrawLineAA(x1, y1, x2, y2, color) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("アンチエイリアス付き線の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+/// 四角を描画
+pub fn draw_box(x1: i32, y1: i32, x2: i32, y2: i32, color: Color, fill_flag: i32) -> Res<i32> {
+    let res = unsafe { dx_DrawBox(x1, y1, x2, y2, color, fill_flag) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("四角形の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+/// 四角を描画(アンチエイリアス効果付き)
+pub fn draw_box_aa(x1: f32, y1: f32, x2: f32, y2: f32, color: Color, fill_flag: i32) -> Res<i32> {
+    let res = unsafe { dx_DrawBoxAA(x1, y1, x2, y2, color, fill_flag) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("アンチエイリアス付き四角形の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+/// 点の描画
+pub fn draw_pixel(x: i32, y: i32, color: u32) -> Res<i32> {
+    let res = unsafe { dx_DrawPixel(x, y, color) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("点の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+/// 指定点の色を取得
+pub fn get_pixel(x: i32, y: i32) -> Res<i32> {
+    let res = unsafe { dx_GetPixel(x, y) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("指定座標のピクセルの取得に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+
+// 円の描画
+pub fn draw_circle(x:i32,y:i32,r:i32,color:u32,fill_flag:i32)->Res<i32>{
+    let res = unsafe { dx_DrawCircle(x,y,r,color,fill_flag) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("円の描画に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+
+
+
 //３Ｄ図形描画関係関数
+
+
 pub fn draw_line_3d(pos1: VECTOR, pos2: VECTOR, color: u32) -> Res<i32> {
     let res = unsafe { dx_DrawLine3D(pos1, pos2, color) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -159,7 +281,7 @@ pub fn draw_triangle_3d(
 ) -> Res<i32> {
     let res = unsafe { dx_DrawTriangle3D(pos1, pos2, pos3, color, fill_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -175,7 +297,7 @@ pub fn draw_sphere_3d(
 ) -> Res<i32> {
     let res = unsafe { dx_DrawSphere3D(center_pos, r, div_num, spc_color, spc_color, fill_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -192,7 +314,7 @@ pub fn draw_capsule_3d(
 ) -> Res<i32> {
     let res = unsafe { dx_DrawCapsule3D(pos1, pos2, r, div_num, dif_color, spc_color, fill_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -213,7 +335,7 @@ pub fn draw_cone_3d(
         )
     };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -230,7 +352,7 @@ pub fn draw_bill_board_3d(
 ) -> Res<i32> {
     let res = unsafe { dx_DrawBillboard3D(pos, cx, cy, size, angle, gr_handle, trans_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -254,7 +376,7 @@ pub fn draw_polygon_indexed_3d(
         )
     };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -267,7 +389,7 @@ pub fn dx_draw_polygon_3d(
 ) -> Res<i32> {
     let res = unsafe { dx_DrawPolygon3D(vertex, polygon_num, gr_handle, trans_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("3d描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -276,7 +398,7 @@ pub fn dx_draw_polygon_3d(
 pub fn set_material_use_vert_dif_color(use_flag: i32) -> Res<i32> {
     let res = unsafe { dx_SetMaterialUseVertDifColor(use_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("頂点カラー使用フラグの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -284,7 +406,7 @@ pub fn set_material_use_vert_dif_color(use_flag: i32) -> Res<i32> {
 pub fn set_material_use_vert_spc_color(use_flag: i32) -> Res<i32> {
     let res = unsafe { dx_SetMaterialUseVertSpcColor(use_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("スペシャルカラー使用フラグの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -292,7 +414,7 @@ pub fn set_material_use_vert_spc_color(use_flag: i32) -> Res<i32> {
 pub fn set_material_param(material: MATERIALPARAM) -> Res<i32> {
     let res = unsafe { dx_SetMaterialParam(material) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("マテリアルの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -302,7 +424,7 @@ pub fn set_material_param(material: MATERIALPARAM) -> Res<i32> {
 pub fn set_use_zbuffer_3d(flag: i32) -> Res<i32> {
     let res = unsafe { dx_SetUseZBuffer3D(flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("Zバッファ使用フラグの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -311,7 +433,7 @@ pub fn set_use_zbuffer_3d(flag: i32) -> Res<i32> {
 pub fn set_write_zbuffer_3d(flag: i32) -> Res<i32> {
     let res = unsafe { dx_SetWriteZBuffer3D(flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("Zバッファ書き込みフラグの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -319,7 +441,7 @@ pub fn set_write_zbuffer_3d(flag: i32) -> Res<i32> {
 pub fn set_use_back_culling(flag: i32) -> Res<i32> {
     let res = unsafe { dx_SetUseBackCulling(flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("バックカリング使用フラグの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -327,7 +449,7 @@ pub fn set_use_back_culling(flag: i32) -> Res<i32> {
 pub fn set_texture_address_mode_uv(mode_u: i32, mode_v: i32) -> Res<i32> {
     let res = unsafe { dx_SetTextureAddressModeUV(mode_u, mode_v) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("テクスチャのアドレスモード変更に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -335,7 +457,7 @@ pub fn set_texture_address_mode_uv(mode_u: i32, mode_v: i32) -> Res<i32> {
 pub fn set_fog_enable(flag: i32) -> Res<i32> {
     let res = unsafe { dx_SetFogEnable(flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("フォグ使用フラグの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -343,7 +465,7 @@ pub fn set_fog_enable(flag: i32) -> Res<i32> {
 pub fn set_fog_color(red: i32, green: i32, blue: i32) -> Res<i32> {
     let res = unsafe { dx_SetFogColor(red, green, blue) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("フォグの色の変更に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -351,7 +473,7 @@ pub fn set_fog_color(red: i32, green: i32, blue: i32) -> Res<i32> {
 pub fn set_fog_start_end(start: f32, end: f32) -> Res<i32> {
     let res = unsafe { dx_SetFogStartEnd(start, end) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("フォグの開始距離または終了距離の設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -373,63 +495,6 @@ pub fn get_coloru8(red: i32, green: i32, blue: i32, alpha: i32) -> Option<COLOR_
     return Some(res);
 }
 
-// 図形描画関数
-
-/// 線を描画
-pub fn draw_line(x1: i32, y1: i32, x2: i32, y2: i32, color: Color) -> Res<i32> {
-    let res = unsafe { dx_DrawLine(x1, y1, x2, y2, color) };
-    if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
-    } else {
-        return Ok(res);
-    }
-}
-/// 線を描画(アンチエイリアス効果付き)
-pub fn draw_line_aa(x1: f32, y1: f32, x2: f32, y2: f32, color: Color) -> Res<i32> {
-    let res = unsafe { dx_DrawLineAA(x1, y1, x2, y2, color) };
-    if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
-    } else {
-        return Ok(res);
-    }
-}
-/// 四角を描画
-pub fn draw_box(x1: i32, y1: i32, x2: i32, y2: i32, color: Color, fill_flag: i32) -> Res<i32> {
-    let res = unsafe { dx_DrawBox(x1, y1, x2, y2, color, fill_flag) };
-    if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
-    } else {
-        return Ok(res);
-    }
-}
-/// 四角を描画(アンチエイリアス効果付き)
-pub fn draw_box_aa(x1: f32, y1: f32, x2: f32, y2: f32, color: Color, fill_flag: i32) -> Res<i32> {
-    let res = unsafe { dx_DrawBoxAA(x1, y1, x2, y2, color, fill_flag) };
-    if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
-    } else {
-        return Ok(res);
-    }
-}
-
-pub fn draw_pixel(x: i32, y: i32, color: u32) -> Res<i32> {
-    let res = unsafe { dx_DrawPixel(x, y, color) };
-    if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
-    } else {
-        return Ok(res);
-    }
-}
-/// 指定点の色を取得
-pub fn get_pixel(x: i32, y: i32) -> Res<i32> {
-    let res = unsafe { dx_GetPixel(x, y) };
-    if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
-    } else {
-        return Ok(res);
-    }
-}
-
 /// ミリ秒単位の精度を持つカウンタの現在値を得る
 pub fn get_now_count() -> i32 {
     let res = unsafe { dx_GetNowCount() };
@@ -445,7 +510,7 @@ pub fn get_now_hiperformance_count() -> i64 {
 pub fn wait_timer(wait_time: i32) -> Res<i32> {
     let res = unsafe { dx_WaitTimer(wait_time) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("タイマーの待機処理に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -462,7 +527,7 @@ pub fn wait_key() -> i32 {
 pub fn load_music_mem(file_name: &str) -> Res<i32> {
     let res = unsafe { dx_LoadMusicMem(file_name) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("音楽の読み込みに失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -470,7 +535,7 @@ pub fn load_music_mem(file_name: &str) -> Res<i32> {
 pub fn play_music_mem(music_handle: i32, play_type: i32, top_position_flag: i32) -> Res<i32> {
     let res = unsafe { dx_PlayMusicMem(music_handle, play_type, top_position_flag) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("ロード済みの音楽の再生に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -478,7 +543,7 @@ pub fn play_music_mem(music_handle: i32, play_type: i32, top_position_flag: i32)
 pub fn delete_music_mem(music_handle: i32) -> Res<i32> {
     let res = unsafe { dx_DeleteMusicMem(music_handle) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("ロード済みの音楽の削除に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -487,7 +552,7 @@ pub fn delete_music_mem(music_handle: i32) -> Res<i32> {
 pub fn play_music(file_name: &str, play_type: i32) -> Res<i32> {
     let res = unsafe { dx_PlayMusic(file_name, play_type) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("MIDIファイルまたはMP3ファイルの再生に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -496,7 +561,7 @@ pub fn play_music(file_name: &str, play_type: i32) -> Res<i32> {
 pub fn check_music() -> Res<i32> {
     let res = unsafe { dx_CheckMusic() };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("MIDIファイルまたはMP3ファイルの再生中の情報取得に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -505,7 +570,7 @@ pub fn check_music() -> Res<i32> {
 pub fn stop_music() -> Res<i32> {
     let res = unsafe { dx_StopMusic() };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("MIDIファイルまたはMP3ファイルの停止に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -514,7 +579,7 @@ pub fn stop_music() -> Res<i32> {
 pub fn set_volume_music(volume: i32) -> Res<i32> {
     let res = unsafe { dx_SetVolumeMusic(volume) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("MIDIファイルまたはMP3ファイルの音量設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -524,7 +589,7 @@ pub fn set_volume_music(volume: i32) -> Res<i32> {
 pub fn get_date_time(data_buf: &mut DATEDATA) -> Res<i32> {
     let res = unsafe { dx_GetDateTime(data_buf) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("現在時刻の取得に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -544,7 +609,7 @@ pub fn s_rand(seed: i32) -> i32 {
 pub fn set_main_window_text(window_text: &str) -> Res<i32> {
     let res = unsafe { dx_SetMainWindowText(window_text) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("ウィンドウタイトルの設定に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -552,7 +617,7 @@ pub fn set_main_window_text(window_text: &str) -> Res<i32> {
 pub fn mv1_load_model(file_name: &str) -> Res<i32> {
     let res = unsafe { dx_MV1LoadModel(file_name) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("モデルのロードに失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -560,7 +625,7 @@ pub fn mv1_load_model(file_name: &str) -> Res<i32> {
 pub fn mv1_delete_model(m_handle: i32) -> Res<i32> {
     let res = unsafe { dx_MV1DeleteModel(m_handle) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("ロード済みのモデルの削除に失敗しました。", res)));
     } else {
         return Ok(res);
     }
@@ -568,7 +633,7 @@ pub fn mv1_delete_model(m_handle: i32) -> Res<i32> {
 pub fn mv1_draw_model(m_handle: i32) -> Res<i32> {
     let res = unsafe { dx_MV1DrawModel(m_handle) };
     if res == -1 {
-        return Err(anyhow!(DxError::new("", res)));
+        return Err(anyhow!(DxError::new("ロード済みのモデルの描画に失敗しました。", res)));
     } else {
         return Ok(res);
     }

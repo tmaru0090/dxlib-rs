@@ -21,10 +21,10 @@ mod tests {
     const TEST_MAX_WINDOW_WIDTH: i32 = 1280;
     const TEST_MAX_WINDOW_HEIGHT: i32 = 800;
     const TEST_WINDOW_TITLE: &str = "test-window";
-    const TEST_GRAPH_PATH: &str = "/Users/daruma/Downloads/irisu203/irisu203/photo.png";
+    const TEST_GRAPH_PATH: &str = "/Users/tanukimaru/Downloads/irisu203/irisu203/photo.png";
     const TEST_MODEL_PATH: &str =
-        "/Users/daruma/Downloads/3Dsample/3Dsample/dat/Lat式ミク/Lat式ミクVer2.3_Normal.pmd";
-    const TEST_MUSIC_PATH: &str = "/Users/daruma/Downloads/touhou-sinki.wav";
+        "/Users/tanukimaru/Downloads/3Dsample/3Dsample/dat/Lat式ミク/Lat式ミクVer2.3_Normal.pmd";
+    const TEST_MUSIC_PATH: &str = "/Users/tanukimaru/Downloads/touhou-sinki.wav";
     #[test]
     fn init() -> Result<(), Box<dyn std::error::Error>> {
         change_window_mode(TRUE)?;
