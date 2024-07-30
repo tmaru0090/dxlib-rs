@@ -95,6 +95,7 @@ pub fn get_color(red: i32, green: i32, blue: i32) -> Option<u32> {
     }
     Some(unsafe { dx_GetColor(red, green, blue) })
 }
+/// ウィンドウモードの変更
 pub fn change_window_mode(flag: i32) -> Res<i32> {
     let res = unsafe { dx_ChangeWindowMode(flag) };
     if res == -1 {
@@ -103,6 +104,7 @@ pub fn change_window_mode(flag: i32) -> Res<i32> {
         return Ok(res);
     }
 }
+
 pub fn set_use_charcode_format(char_code_format: i32) -> Res<i32> {
     let res = unsafe { dx_SetUseCharCodeFormat(char_code_format) };
     if res == -1 {
@@ -168,8 +170,7 @@ pub fn draw_rota_graph(
     }
 }
 
-
-/*
+/// ロード済みのグラフィックのLR反転描画
 pub fn draw_turn_graph(x:i32,y:i32,gr_handle:i32,trans_flag:i32)->Res<i32>{
     let res = unsafe { dx_DrawTurnGraph(x, y, gr_handle, trans_flag) };
     if res == -1 {
@@ -178,8 +179,8 @@ pub fn draw_turn_graph(x:i32,y:i32,gr_handle:i32,trans_flag:i32)->Res<i32>{
         return Ok(res);
     }
 }
-*/
 
+/// ロード済みのグラフィックのサイズの取得
 pub fn get_graph_size(gr_handle:i32,size_xbuf:&mut i32,size_ybuf:&mut i32)->Res<i32>{
     let res = unsafe { dx_GetGraphSize(gr_handle,size_xbuf,size_ybuf) };
     if res == -1 {
@@ -524,6 +525,38 @@ pub fn wait_key() -> i32 {
 }
 
 // 音楽再生関数
+
+/// メモリに読み込んだサウンドファイルの読み込み
+pub fn load_sound_mem(file_name: &str) -> Res<i32> {
+    let res = unsafe { dx_LoadSoundMem(file_name) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("サウンドの読み込みに失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+/// メモリに読み込んだサウンドファイルの再生
+pub fn play_sound_mem(music_handle: i32, play_type: i32, top_position_flag: i32) -> Res<i32> {
+    let res = unsafe { dx_PlaySoundMem(music_handle, play_type, top_position_flag) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("ロード済みのサウンドの再生に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+
+/// メモリに読み込んだサウンドファイルの削除
+pub fn delete_sound_mem(music_handle: i32) -> Res<i32> {
+    let res = unsafe { dx_DeleteSoundMem(music_handle) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("ロード済みのサウンドの削除に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+
+
+/// メモリに読み込んだ音楽ファイルの読み込み
 pub fn load_music_mem(file_name: &str) -> Res<i32> {
     let res = unsafe { dx_LoadMusicMem(file_name) };
     if res == -1 {
@@ -532,6 +565,7 @@ pub fn load_music_mem(file_name: &str) -> Res<i32> {
         return Ok(res);
     }
 }
+/// メモリに読み込んだ音楽ファイルの再生
 pub fn play_music_mem(music_handle: i32, play_type: i32, top_position_flag: i32) -> Res<i32> {
     let res = unsafe { dx_PlayMusicMem(music_handle, play_type, top_position_flag) };
     if res == -1 {
@@ -540,6 +574,8 @@ pub fn play_music_mem(music_handle: i32, play_type: i32, top_position_flag: i32)
         return Ok(res);
     }
 }
+
+/// メモリに読み込んだ音楽ファイルの削除
 pub fn delete_music_mem(music_handle: i32) -> Res<i32> {
     let res = unsafe { dx_DeleteMusicMem(music_handle) };
     if res == -1 {
@@ -584,6 +620,28 @@ pub fn set_volume_music(volume: i32) -> Res<i32> {
         return Ok(res);
     }
 }
+/// サウンドハンドルの再生位置をバイト単位で取得する
+pub fn get_sound_current_position(sound_handle:i32)->Res<i32>{
+    let res = unsafe { dx_GetSoundCurrentPosition(sound_handle) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("音声ファイルの再生位置の取得に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+
+/// サウンドハンドルの再生位置をミリ秒単位で取得する
+/// (無圧縮wav,Ogg以外の形式の場合は正しい値が返ってこない場合があります)
+pub fn get_sound_current_time(sound_handle:i32)->Res<i32>{
+    let res = unsafe { dx_GetSoundCurrentTime(sound_handle) };
+    if res == -1 {
+          return Err(anyhow!(DxError::new("音声ファイルの再生位置の取得に失敗しました。", res)));
+    } else {
+        return Ok(res);
+    }
+}
+
+
 
 /// 現在時刻を取得する
 pub fn get_date_time(data_buf: &mut DATEDATA) -> Res<i32> {

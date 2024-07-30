@@ -3,7 +3,7 @@ use crate::ffi::dxlib::*;
 use anyhow::anyhow;
 use anyhow::Result as Res;
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct KeyBoard {
     key_state: [i32; 256],
     key_buf: [i8; 256],
