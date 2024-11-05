@@ -5,8 +5,25 @@ use anyhow::anyhow;
 use anyhow::Result as Res;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
-pub fn set_out_application_log_valid_flag(flag:i32)->Res<i32>{
-    let res = unsafe{dx_SetOutApplicationLogValidFlag(flag)};
+
+pub fn set_font_size(size: i32) -> Res<i32> {
+    let res = unsafe { dx_SetFontSize(size) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("", res)));
+    } else {
+        return Ok(res);
+    }
+}
+pub fn change_font(font_name: &str) -> Res<i32> {
+    let res = unsafe { dx_ChangeFont(font_name) };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("", res)));
+    } else {
+        return Ok(res);
+    }
+}
+pub fn set_out_application_log_valid_flag(flag: i32) -> Res<i32> {
+    let res = unsafe { dx_SetOutApplicationLogValidFlag(flag) };
     if res == -1 {
         return Err(anyhow!(DxError::new("", res)));
     } else {
@@ -23,7 +40,10 @@ pub fn get_drag_file_path(file_path_buffer: &mut String) -> Res<i32> {
         dx_GetDragFilePath(buf_ptr) // C関数を呼び出す
     };
     if res == -1 {
-        return Err(anyhow!(DxError::new("ドロップアンドドロップされたファイルはありません", res)));
+        return Err(anyhow!(DxError::new(
+            "ドロップアンドドロップされたファイルはありません",
+            res
+        )));
     }
     // Cの文字列からRustのStringに変換
     let path_cstr = unsafe { CStr::from_ptr(buf_ptr) }; // Cの文字列を取得
