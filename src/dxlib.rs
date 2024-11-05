@@ -4,6 +4,14 @@ use crate::ffi::dxlib::*;
 use anyhow::anyhow;
 use anyhow::Result as Res;
 
+pub fn draw_string_to_handle(x:i32,y:i32,string:&str,color:u32,font_handle:i32)->Res<i32>{
+    let res = unsafe{dx_DrawStringToHandle(x,y,string,color,font_handle)};
+    if res == -1{
+        return Err(anyhow!(DxError::new("フォントつきの文字列の描画に失敗しました",res)));
+    }else{
+        return Ok(res);
+    }
+}
 /// ウィンドウサイズを変更する
 pub fn set_window_size(width: i32, height: i32) -> Res<i32> {
     let res = unsafe { dx_SetWindowSize(width, height) };
