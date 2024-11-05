@@ -5,7 +5,14 @@ use anyhow::anyhow;
 use anyhow::Result as Res;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
-
+pub fn get_drag_file_num() -> Res<i32> {
+    let res = unsafe { dx_GetDragFileNum() };
+    if res == -1 {
+        return Err(anyhow!(DxError::new("", res)));
+    } else {
+        return Ok(res);
+    }
+}
 pub fn set_font_size(size: i32) -> Res<i32> {
     let res = unsafe { dx_SetFontSize(size) };
     if res == -1 {
