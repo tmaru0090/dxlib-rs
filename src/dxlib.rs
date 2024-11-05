@@ -6,7 +6,7 @@ use anyhow::Result as Res;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 
-fn get_drag_file_path(file_path_buffer: &mut String) -> Res<i32> {
+pub fn get_drag_file_path(file_path_buffer: &mut String) -> Res<i32> {
     // バッファのサイズを指定
     let mut buf = vec![0_u8; 1000]; // 1000バイトのバッファを作成
     let buf_ptr = buf.as_mut_ptr() as *mut c_char; // C用のポインタに変換
