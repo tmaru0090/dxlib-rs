@@ -3,7 +3,7 @@ use crate::ffi::dxlib::*;
 use anyhow::anyhow;
 use anyhow::Result as Res;
 
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct KeyBoard {
     key_state: [i32; 256],
     key_buf: [i8; 256],
@@ -48,12 +48,14 @@ impl KeyBoard {
         Ok(())
     }
 
-   pub fn wait_until_key_pressed(&self, key_code: i32) {
+    pub fn wait_until_key_pressed(&self, key_code: i32) {
         // 指定されたキーコードが1以上になるまで待機
         if self.get_press_cnt(key_code) != TRUE {
             // ウェイトを入れて、無駄な処理負荷を軽減します
             //thread::sleep(Duration::from_millis(10));
-            unsafe{dx_WaitTimer(100);}
+            unsafe {
+                dx_WaitTimer(100);
+            }
         }
     }
     pub fn is_available_code(&self, key_code: i32) -> bool {
