@@ -5,7 +5,14 @@ use anyhow::anyhow;
 use anyhow::Result as Res;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
-
+pub fn set_out_application_log_valid_flag(flag:i32)->Res<i32>{
+    let res = unsafe{dx_SetOutApplicationLogValidFlag(flag)};
+    if res == -1 {
+        return Err(anyhow!(DxError::new("", res)));
+    } else {
+        return Ok(res);
+    }
+}
 pub fn get_drag_file_path(file_path_buffer: &mut String) -> Res<i32> {
     // バッファのサイズを指定
     let mut buf = vec![0_u8; 1000]; // 1000バイトのバッファを作成
